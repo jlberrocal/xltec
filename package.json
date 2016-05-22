@@ -1,0 +1,31 @@
+{
+  "name": "xltec-backend",
+  "version": "1.0.0",
+  "description": "backend for the xltec application",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js",
+    "production": "node server.js",
+    "build": "babel src -d lib"
+  },
+  "keywords": [
+    "xltec",
+    "backend",
+    "coriport",
+    "aeris"
+  ],
+  "author": "jberrocal",
+  "license": "AGPL-3.0",
+  "dependencies": {
+    "bcrypt-nodejs": "*",
+    "body-parser": "*",
+    "cors": "*",
+    "express": "*",
+    "jsonwebtoken": "*",
+    "moment": "*",
+    "mongo-xlsx": "*",
+    "mongoose": "*",
+    "path": "*",
+    "serialport": "*"
+  }
+}
