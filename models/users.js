@@ -10,7 +10,11 @@ var mongoose = require('mongoose'),
 
 var user = new schema({
     name: { type: String, required: "The name is a required value" },
-    username: { type: String, required: "The username is a required value", index: { unique: true } },
+    username: { type: String, required: "The username is" +
+    "" +
+    "" +
+    "cls" +
+    " a required value", index: { unique: true } },
     password: { type: String, required: "The password is a required value" },
     roles: { type: Array, required: "You must provide at least one role" },
     allowedDevices: [{ type: schema.Types.ObjectId, ref: 'Device' }],

@@ -4,7 +4,7 @@
   "description": "backend for the xltec application",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "nodemon server.js",
     "production": "node server.js",
     "build": "babel src -d lib"
   },
@@ -15,17 +15,16 @@
     "aeris"
   ],
   "author": "jberrocal",
-  "license": "AGPL-3.0",
+  "license": "AGPL-v3.0",
   "dependencies": {
-    "bcrypt-nodejs": "*",
-    "body-parser": "*",
-    "cors": "*",
-    "express": "*",
-    "jsonwebtoken": "*",
-    "moment": "*",
-    "mongo-xlsx": "*",
-    "mongoose": "*",
-    "path": "*",
-    "serialport": "*"
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.15.1",
+    "cors": "^2.7.1",
+    "express": "^4.13.4",
+    "jsonwebtoken": "^7.0.0",
+    "moment": "^2.13.0",
+    "mongo-xlsx": "^1.0.11",
+    "mongoose": "^4.4.19",
+    "path": "^0.12.7"
   }
 }

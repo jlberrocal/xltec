@@ -1,0 +1,15 @@
+<div class="container">
+    <h1>Variables Operativas</h1>
+    <div class="col-md-4" ng-repeat="data in graphs">
+        <div>
+            <p class="text-center">{{ data.user }}</p>
+            <canvas class="chart chart-doughnut" ng-if="data.processes.titles.length > 0"
+                    chart-data="data.processes.data" chart-labels="data.processes.titles" chart-legend="true">
+            </canvas>
+            <div ng-if="data.processes.titles.length === 0">
+                <p class="text-center">No presenta datos</p>
+            </div>
+            <hr />
+        </div>
+    </div>
+</div>
