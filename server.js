@@ -39,6 +39,6 @@ mongoose.connect(config.mongoUrl, function (err) {
     console.info("Connected to DB");
 });
 
-app.listen(config.port, function () {
+app.listen(process.env.PORT || config.port, function () {
     console.info("Application listening on port: ", config.port);
 });
