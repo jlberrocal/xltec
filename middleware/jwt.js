@@ -9,6 +9,7 @@ var jwt     = require('jsonwebtoken'),
 
 router.use(bodyParser.json());
 router.use(function (req, resp, next) {
+    if(req.url.indexOf('xlsx') !== -1) return next();
     var token = req.headers['x-auth-token'] || req.body.token;
     if(token) {
         jwt.verify(token, config.jwt, function (err, decoded) {

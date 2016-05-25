@@ -24,14 +24,9 @@ app.use('/api/permissions', jwtMiddleware, permissions);
 app.use('/api/process', jwtMiddleware, processes);
 app.use('/api/codes', jwtMiddleware, codes);
 app.use('/apk', apk);
-app.use(express.static(__dirname + '/public/dist'));
 
-app.get('/*', function(req, resp) {
-    resp.sendFile(__dirname + '/public/dist/index.html');
-});
-
-app.options('/*', function (req, resp) {
-    resp.end();
+app.use(function (req, resp, next) {
+    resp.status(404).json({error: "The route that you are trying to access is not available"});
 });
 
 mongoose.connect(config.mongoUrl, function (err) {
@@ -39,6 +34,6 @@ mongoose.connect(config.mongoUrl, function (err) {
     console.info("Connected to DB");
 });
 
-app.listen(process.env.PORT || config.port, function () {
+app.listen(process.env.PORT ||config.port, function () {
     console.info("Application listening on port: ", config.port);
 });

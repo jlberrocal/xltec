@@ -15,6 +15,7 @@ router.use(bodyParser.json());
 router.use(cors());
 
 router.route('/').post(function (req, resp) {
+    console.log("someone is attempting to authenticate");
     Users.findOne().where({ username: req.body.username }).populate('allowedDevices').exec().then(function (user) {
         if (!user) return resp.status(404).json(invalid);
         if (req.body.mac) {
