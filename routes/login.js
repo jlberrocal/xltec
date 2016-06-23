@@ -20,9 +20,12 @@ router.route('/').post(function (req, resp) {
         if (!user) return resp.status(404).json(invalid);
         if (req.body.mac) {
             var allowedDevices = user.allowedDevices.map(function (device) {
-                return device.mac;
+                return device.mac.toUpperCase();
             });
-            if (user.roles.indexOf('audit') === -1) return resp.status(400).json({ message: 'Sorry ' + user.name + " but you don't have access as auditor" });else if (allowedDevices.indexOf(req.body.mac) === -1) return resp.status(400).json({ message: 'Sorry ' + user.name + " but this device is not authorized" });
+            if (user.roles.indexOf('audit') === -1)
+				return resp.status(400).json({ message: 'Sorry ' + user.name + " but you don't have access as auditor" });
+			else if (allowedDevices.indexOf(req.body.mac.toUpperCase()) === -1) 
+				return resp.status(400).json({ message: 'Sorry ' + user.name + " but this device is not authorized" });
         }
         user.comparePassword(req.body.password).then(function () {
             var token = jwt.sign({
