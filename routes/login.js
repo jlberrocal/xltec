@@ -14,18 +14,19 @@ var invalid = { message: "Invalid credentials" };
 router.use(bodyParser.json());
 router.use(cors());
 
-router.route('/').post(function (req, resp) {
+router.route('/')
+    .get(function (req, resp) {
+        resp.json({message: 'Exactly what are you trying to do?'});
+    })
+    .post(function (req, resp) {
     console.log("someone is attempting to authenticate");
     Users.findOne().where({ username: req.body.username }).populate('allowedDevices').exec().then(function (user) {
         if (!user) return resp.status(404).json(invalid);
         if (req.body.mac) {
             var allowedDevices = user.allowedDevices.map(function (device) {
-                return device.mac.toUpperCase();
+                return device.mac;
             });
-            if (user.roles.indexOf('audit') === -1)
-				return resp.status(400).json({ message: 'Sorry ' + user.name + " but you don't have access as auditor" });
-			else if (allowedDevices.indexOf(req.body.mac.toUpperCase()) === -1) 
-				return resp.status(400).json({ message: 'Sorry ' + user.name + " but this device is not authorized" });
+            if (user.roles.indexOf('audit') === -1) return resp.status(400).json({ message: 'Sorry ' + user.name + " but you don't have access as auditor" });else if (allowedDevices.indexOf(req.body.mac) === -1) return resp.status(400).json({ message: 'Sorry ' + user.name + " but this device is not authorized" });
         }
         user.comparePassword(req.body.password).then(function () {
             var token = jwt.sign({
