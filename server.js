@@ -24,8 +24,9 @@ app.use('/api/permissions', jwtMiddleware, permissions);
 app.use('/api/process', jwtMiddleware, processes);
 app.use('/api/codes', jwtMiddleware, codes);
 app.use('/apk', apk);
-app.get('/api', function(req, resp) {
-    resp.json({message: 'This is the entry point of the api'});
+
+app.get('/api', function (req, resp) {
+    resp.json({message: "Entry point of the api"});
 });
 
 app.use(function (req, resp, next) {

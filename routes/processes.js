@@ -150,7 +150,7 @@ router.route('/:process').get(function (req, resp) {
 			break;
 		case 'customs':
 			Customs.create(req.body).then(function (values) {
-				return resp.send("El servidor almacenó" + values.length + "registros de aduanas");
+				return resp.send("El servidor almacenó " + values.length + " registros de aduanas");
 			}, function (err) {
 				return resp.status(500).json(err);
 			});
