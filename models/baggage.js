@@ -15,7 +15,7 @@ var baggage = new Schema({
     lastLuggageTakenBy: { type: String, required: true, enum: ['G', 'P'] },
     passengersCount: { type: String, required: true },
     luggageCount: { type: String, required: true },
-    firstLuggageIn: { type: Date, required: true },
+    firstLuggageIn: { type: String, required: true },
     lastLuggageInBand: { type: String, required: true },
     lastLuggageTaken: { type: String, required: true },
     totalTime: { type: String, required: true },
