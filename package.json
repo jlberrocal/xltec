@@ -22,7 +22,7 @@
     "cors": "^2.7.1",
     "express": "^4.13.4",
     "jsonwebtoken": "^7.0.0",
-    "moment": "^2.13.0",
+    "moment": "^2.17.1",
     "mongo-xlsx": "^1.0.11",
     "mongoose": "^4.4.19",
     "path": "^0.12.7"
