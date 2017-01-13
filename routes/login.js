@@ -11,7 +11,6 @@ let router = require('express').Router(),
     config = require('../config/params'),
     Users = require('../models/users'),
     invalid = { message: "Invalid credentials" };
-require('moment-range');
 router.use(bodyParser.json());
 router.use(cors());
 
