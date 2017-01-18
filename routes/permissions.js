@@ -6,6 +6,7 @@
 var router = require('express').Router(),
     bodyParser = require('body-parser'),
     Permissions = require('../models/permissions'),
+    User = require('../models/users'),
     moment = require('moment');
 
 router.use(bodyParser.json());
@@ -25,6 +26,7 @@ router.route('/').get(function (req, resp) {
     if (!req.body.from || !req.body.until) resp.status(415).json({ message: "Missed required arguments" });
     req.body.from = moment(req.body.from, 'DD-MM-YYYY').format();
     req.body.until = moment(req.body.until, 'DD-MM-YYYY').format();
+
     var permission = new Permissions(req.body);
     permission.save().then(function () {
         return resp.json({ message: "Permission created successfully" });

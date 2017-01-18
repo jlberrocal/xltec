@@ -201,7 +201,7 @@ router.route('/:process').get(function (req, resp) {
 			Boarding.create(req.body).then(function (values) {
 				return resp.send("El servidor almacenó " + values.length + " registros de abordaje");
 			}, function (err) {
-				resp.status(500).json(err);console.error(err);
+				resp.status(500).json(err);
 			});
 			break;
 		case 'departure':

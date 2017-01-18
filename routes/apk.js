@@ -8,7 +8,6 @@ var router = require('express').Router(),
 
 router.get('/', function (req, resp) {
     var file = path.join(__dirname, '../apk', 'xltec.apk');
-    console.log(file);
     resp.download(file, function () {
         return console.log("application downloaded from " + req.ip);
     });

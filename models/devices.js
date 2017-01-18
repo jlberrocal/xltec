@@ -52,7 +52,6 @@ devices.statics.unlinkUser = function (user, callback) {
 		});
 
 		Promise.all(promises).then(function () {
-			console.info('all promises were executed');
 			callback();
 		}, function(err){
 			console.error(err);
