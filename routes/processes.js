@@ -845,7 +845,7 @@ router.get('/:process/xlsx', function (req, resp) {
 				});
 			});break;
 		case 'boarding':
-			XRays.find().select('-_id -__v').exec().then(function (data) {
+			Boarding.find().select('-_id -__v').exec().then(function (data) {
 				var model = [{
 					displayName: "Auditor",
 					access: "auditor",
@@ -907,7 +907,7 @@ router.get('/:process/xlsx', function (req, resp) {
 				});
 			});break;
 		case 'departure':
-			XRays.find().select('-_id -__v').exec().then(function (data) {
+			DepartureTracking.find().select('-_id -__v').exec().then(function (data) {
 				var model = [{
 					displayName: "Auditor",
 					access: "auditor",
