@@ -41,7 +41,7 @@ router.route('/')
                     username: user.username,
                     roles: user.roles
                 }, config.jwt, {
-                    expiresIn: req.body.rememberMe ? 3600 * 24 * 31 : req.body.mac ? '24h' : '8h'
+                    expiresIn: req.body.rememberMe ? 3600 * 24 * 31 : req.body.mac ? '24h' : '20h'
                 });
                 resp.setHeader('x-auth-token', token);
                 resp.setHeader('Access-Control-Expose-Headers', 'x-auth-token');
