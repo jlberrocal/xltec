@@ -140,7 +140,7 @@ router.route('/:process').get(function (req, resp) {
 			req.body.forEach(function (item) {
 				item.justificationCode = item.justificationCode.split(',');
 				item.justificationText = item.justificationText.split(',');
-				item.lastLuggageTakenBy = item.lastLuggageTakenBy ? 'G' : 'F';
+				item.lastLuggageTakenBy = item.lastLuggageTakenBy ? 'G' : 'P';
 			});
 			Baggage.create(req.body).then(function (values) {
 				return resp.send("El servidor almacenó " + values.length + " registros de equipaje");
