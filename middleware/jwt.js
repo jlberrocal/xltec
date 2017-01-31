@@ -7,7 +7,7 @@ var jwt     = require('jsonwebtoken'),
     bodyParser  = require('body-parser'),
     router  = require('express').Router();
 
-router.use(bodyParser.json());
+router.use(bodyParser.json({limit: 1024*1024*50}));
 router.use(function (req, resp, next) {
     if(req.url.indexOf('xlsx') !== -1) return next();
     var token = req.headers['x-auth-token'] || req.body.token;
