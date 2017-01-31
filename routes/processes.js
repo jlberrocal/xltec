@@ -19,7 +19,7 @@ var router = require('express').Router(),
 	xlsx = require('mongo-xlsx'),
 	fs = require('fs');
 
-router.use(bodyParser.json({limit: '50mb'}));
+router.use(bodyParser.json({limit: 1024*1024*50}));
 router.use(bodyParser.urlencoded({ extended: true }));
 
 var sorter = function sorter(field, reverse, first) {
