@@ -12,7 +12,6 @@ var express         = require('express'),
     permissions     = require('./routes/permissions'),
     processes       = require('./routes/processes'),
     codes           = require('./routes/codes'),
-    apk             = require('./routes/apk'),
     jwtMiddleware   = require('./middleware/jwt'),
     mongoose        = require('mongoose');
 
@@ -23,7 +22,6 @@ app.use('/api/devices', jwtMiddleware, devices);
 app.use('/api/permissions', jwtMiddleware, permissions);
 app.use('/api/process', jwtMiddleware, processes);
 app.use('/api/codes', jwtMiddleware, codes);
-app.use('/apk', apk);
 
 app.get('/api', function (req, resp) {
     resp.json({message: "Entry point of the api"});
