@@ -296,7 +296,7 @@ router.route('/:process').get(function (req, resp) {
 router.get('/:process/xlsx', function (req, resp) {
     switch (req.params.process) {
         case 'migration':
-            Migration.find().select('-_id -__v').exec().then(function (data) {
+            Migration.find().sort({ 'date': 'asc', 'auditor': 'asc' }).select('-_id -__v').exec().then(function (data) {
 
                 var model = [{
                     displayName: "Auditor",
@@ -341,7 +341,7 @@ router.get('/:process/xlsx', function (req, resp) {
                 }, {
                     displayName: "Cod",
                     access: "justificationCode",
-                    type: "number"
+                    type: "string"
                 }, {
                     displayName: "Observaciones",
                     access: "justificationText",
@@ -355,7 +355,7 @@ router.get('/:process/xlsx', function (req, resp) {
                 });
             });break;
         case 'baggage':
-            Baggage.find().select('-_id -__v').exec().then(function (data) {
+            Baggage.find().sort({ 'date': 'asc', 'auditor': 'asc' }).select('-_id -__v').exec().then(function (data) {
                 var model = [{
                     displayName: "Auditor",
                     access: "auditor",
@@ -429,7 +429,7 @@ router.get('/:process/xlsx', function (req, resp) {
             });
             break;
         case 'customs':
-            Customs.find().select('-_id -__v').exec().then(function (data) {
+            Customs.find().sort({ 'date': 'asc', 'auditor': 'asc' }).select('-_id -__v').exec().then(function (data) {
                 var model = [{
                     displayName: "Auditor",
                     access: "auditor",
@@ -473,7 +473,7 @@ router.get('/:process/xlsx', function (req, resp) {
                 }, {
                     displayName: "Cod",
                     access: "justificationCode",
-                    type: "number"
+                    type: "string"
                 }, {
                     displayName: "Observaciones",
                     access: "justificationText",
@@ -487,7 +487,7 @@ router.get('/:process/xlsx', function (req, resp) {
                 });
             });break;
         case 'entrance':
-            EntrancesTracking.find().select('-_id -__v').exec().then(function (data) {
+            EntrancesTracking.find().sort({ 'date': 'asc', 'auditor': 'asc' }).select('-_id -__v').exec().then(function (data) {
                 var model = [{
                     displayName: "Auditor",
                     access: "auditor",
@@ -531,7 +531,7 @@ router.get('/:process/xlsx', function (req, resp) {
                 }, {
                     displayName: "Cod",
                     access: "justificationCode",
-                    type: "number"
+                    type: "string"
                 }, {
                     displayName: "Observaciones",
                     access: "justificationText",
@@ -545,7 +545,7 @@ router.get('/:process/xlsx', function (req, resp) {
                 });
             });break;
         case 'taxes':
-            Taxes.find().select('-_id -__v').exec().then(function (data) {
+            Taxes.find().sort({ 'date': 'asc', 'auditor': 'asc' }).select('-_id -__v').exec().then(function (data) {
                 var model = [{
                     displayName: "Auditor",
                     access: "auditor",
@@ -585,7 +585,7 @@ router.get('/:process/xlsx', function (req, resp) {
                 }, {
                     displayName: "Cod",
                     access: "justificationCode",
-                    type: "number"
+                    type: "string"
                 }, {
                     displayName: "Observaciones",
                     access: "justificationText",
@@ -599,7 +599,7 @@ router.get('/:process/xlsx', function (req, resp) {
                 });
             });break;
         case 'checkIn':
-            CheckIn.find().select('-_id -__v').exec().then(function (data) {
+            CheckIn.find().sort({ 'date': 'asc', 'auditor': 'asc' }).select('-_id -__v').exec().then(function (data) {
                 var model = [{
                     displayName: "Auditor",
                     access: "auditor",
@@ -667,7 +667,7 @@ router.get('/:process/xlsx', function (req, resp) {
                 }, {
                     displayName: "Cod",
                     access: "justificationCode",
-                    type: "number"
+                    type: "string"
                 }, {
                     displayName: "Observaciones",
                     access: "justificationText",
@@ -681,7 +681,7 @@ router.get('/:process/xlsx', function (req, resp) {
                 });
             });break;
         case 'security':
-            Security.find().select('-_id -__v').exec().then(function (data) {
+            Security.find().sort({ 'date': 'asc', 'auditor': 'asc' }).select('-_id -__v').exec().then(function (data) {
                 var model = [{
                     displayName: "Auditor",
                     access: "auditor",
@@ -721,7 +721,7 @@ router.get('/:process/xlsx', function (req, resp) {
                 }, {
                     displayName: "Cod",
                     access: "justificationCode",
-                    type: "number"
+                    type: "string"
                 }, {
                     displayName: "Observaciones",
                     access: "justificationText",
@@ -735,7 +735,7 @@ router.get('/:process/xlsx', function (req, resp) {
                 });
             });break;
         case 'xRays':
-            XRays.find().select('-_id -__v').exec().then(function (data) {
+            XRays.find().sort({ 'date': 'asc', 'auditor': 'asc' }).select('-_id -__v').exec().then(function (data) {
                 var model = [{
                     displayName: "Auditor",
                     access: "auditor",
@@ -775,7 +775,7 @@ router.get('/:process/xlsx', function (req, resp) {
                 }, {
                     displayName: "Cod",
                     access: "justificationCode",
-                    type: "number"
+                    type: "string"
                 }, {
                     displayName: "Observaciones",
                     access: "justificationText",
@@ -789,7 +789,7 @@ router.get('/:process/xlsx', function (req, resp) {
                 });
             });break;
         case 'commercial':
-            CommercialTracking.find().select('-_id -__v').exec().then(function (data) {
+            CommercialTracking.find().sort({ 'date': 'asc', 'auditor': 'asc' }).select('-_id -__v').exec().then(function (data) {
                 var model = [{
                     displayName: "Auditor",
                     access: "auditor",
@@ -833,7 +833,7 @@ router.get('/:process/xlsx', function (req, resp) {
                 }, {
                     displayName: "Cod",
                     access: "justificationCode",
-                    type: "number"
+                    type: "string"
                 }, {
                     displayName: "Observaciones",
                     access: "justificationText",
@@ -847,7 +847,7 @@ router.get('/:process/xlsx', function (req, resp) {
                 });
             });break;
         case 'boarding':
-            Boarding.find().select('-_id -__v').exec().then(function (data) {
+            Boarding.find().sort({ 'date': 'asc', 'auditor': 'asc' }).select('-_id -__v').exec().then(function (data) {
                 var model = [{
                     displayName: "Auditor",
                     access: "auditor",
@@ -895,7 +895,7 @@ router.get('/:process/xlsx', function (req, resp) {
                 }, {
                     displayName: "Cod",
                     access: "justificationCode",
-                    type: "number"
+                    type: "string"
                 }, {
                     displayName: "Observaciones",
                     access: "justificationText",
@@ -909,7 +909,7 @@ router.get('/:process/xlsx', function (req, resp) {
                 });
             });break;
         case 'departure':
-            DepartureTracking.find().select('-_id -__v').exec().then(function (data) {
+            DepartureTracking.find().sort({ 'date': 'asc', 'auditor': 'asc' }).select('-_id -__v').exec().then(function (data) {
                 var model = [{
                     displayName: "Auditor",
                     access: "auditor",
@@ -949,7 +949,7 @@ router.get('/:process/xlsx', function (req, resp) {
                 }, {
                     displayName: "Cod",
                     access: "justificationCode",
-                    type: "number"
+                    type: "string"
                 }, {
                     displayName: "Observaciones",
                     access: "justificationText",
