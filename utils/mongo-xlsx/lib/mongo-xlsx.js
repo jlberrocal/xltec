@@ -233,6 +233,8 @@ exports.mongoData2XlsxData = function(mongoData, mongoModel) {
             if(parse.type === 'number') {
                 excelRow.push(parseInt(aCell))
             }
+            else if(parse.type === 'float')
+                excelRow.push(parseFloat(aCell.replace(',', '.')));
             else if (parse.type === 'date') {
                 // Convert dates into special date fields
                 let date = new Date();
