@@ -337,7 +337,7 @@ router.get('/:process/xlsx', function (req, resp) {
                 }, {
                     displayName: "Tiempo",
                     access: "totalTime",
-                    type: "string"
+                    type: "number"
                 }, {
                     displayName: "Cod",
                     access: "justificationCode",
@@ -403,7 +403,7 @@ router.get('/:process/xlsx', function (req, resp) {
                 }, {
                     displayName: "Tiempo",
                     access: "totalTime",
-                    type: "string"
+                    type: "number"
                 }, {
                     displayName: "Cod",
                     access: "justificationCode",
@@ -469,7 +469,7 @@ router.get('/:process/xlsx', function (req, resp) {
                 }, {
                     displayName: "Tiempo",
                     access: "totalTime",
-                    type: "string"
+                    type: "number"
                 }, {
                     displayName: "Cod",
                     access: "justificationCode",
@@ -527,7 +527,7 @@ router.get('/:process/xlsx', function (req, resp) {
                 }, {
                     displayName: "Tiempo",
                     access: "totalTime",
-                    type: "string"
+                    type: "number"
                 }, {
                     displayName: "Cod",
                     access: "justificationCode",
@@ -581,7 +581,7 @@ router.get('/:process/xlsx', function (req, resp) {
                 }, {
                     displayName: "Tiempo",
                     access: "totalTime",
-                    type: "string"
+                    type: "number"
                 }, {
                     displayName: "Cod",
                     access: "justificationCode",
@@ -663,7 +663,7 @@ router.get('/:process/xlsx', function (req, resp) {
                 }, {
                     displayName: "Tiempo",
                     access: "totalTime",
-                    type: "string"
+                    type: "number"
                 }, {
                     displayName: "Cod",
                     access: "justificationCode",
@@ -717,7 +717,7 @@ router.get('/:process/xlsx', function (req, resp) {
                 }, {
                     displayName: "Tiempo",
                     access: "totalTime",
-                    type: "string"
+                    type: "number"
                 }, {
                     displayName: "Cod",
                     access: "justificationCode",
@@ -771,7 +771,7 @@ router.get('/:process/xlsx', function (req, resp) {
                 }, {
                     displayName: "Tiempo",
                     access: "totalTime",
-                    type: "string"
+                    type: "number"
                 }, {
                     displayName: "Cod",
                     access: "justificationCode",
@@ -829,7 +829,7 @@ router.get('/:process/xlsx', function (req, resp) {
                 }, {
                     displayName: "Tiempo",
                     access: "totalTime",
-                    type: "string"
+                    type: "number"
                 }, {
                     displayName: "Cod",
                     access: "justificationCode",
@@ -891,7 +891,7 @@ router.get('/:process/xlsx', function (req, resp) {
                 }, {
                     displayName: "Tiempo",
                     access: "totalTime",
-                    type: "string"
+                    type: "number"
                 }, {
                     displayName: "Cod",
                     access: "justificationCode",
@@ -945,7 +945,7 @@ router.get('/:process/xlsx', function (req, resp) {
                 }, {
                     displayName: "Tiempo",
                     access: "totalTime",
-                    type: "string"
+                    type: "number"
                 }, {
                     displayName: "Cod",
                     access: "justificationCode",
