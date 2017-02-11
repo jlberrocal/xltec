@@ -63,7 +63,7 @@ router.route('/:process').get(function (req, resp) {
             });
             break;
         case 'entrance':
-            EntrancesTracking.find().sort({ 'id': 'asc', 'auditor': 'asc', 'process': 'asc' }).select('-id -__v').exec().then(function (process) {
+            EntrancesTracking.find().sort({ 'date': 'asc', 'auditor': 'asc', 'process': 'asc' }).select('-id -__v').exec().then(function (process) {
                 if (process.length > 0) return resp.json(process);
                 resp.status(404).json({ message: "There is no records of entrance tracking" });
             }, function (err) {
