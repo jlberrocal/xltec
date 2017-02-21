@@ -487,7 +487,7 @@ router.get('/:process/xlsx', function (req, resp) {
                 });
             });break;
         case 'entrance':
-            EntrancesTracking.find().sort({ 'date': 'asc', 'auditor': 'asc', 'process': 'asc' }).select('-_id -__v').exec().then(function (data) {
+            EntrancesTracking.find().sort({ 'date': 'asc', 'auditor': 'asc' }).select('-_id -__v').exec().then(function (data) {
                 var model = [{
                     displayName: "Auditor",
                     access: "auditor",
