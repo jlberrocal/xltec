@@ -341,7 +341,7 @@ router.get('/:process/xlsx', function (req, resp) {
                 }, {
                     displayName: "Cod",
                     access: "justificationCode",
-                    type: "string"
+                    type: "number"
                 }, {
                     displayName: "Observaciones",
                     access: "justificationText",
@@ -407,7 +407,7 @@ router.get('/:process/xlsx', function (req, resp) {
                 }, {
                     displayName: "Cod",
                     access: "justificationCode",
-                    type: "string"
+                    type: "number"
                 }, {
                     displayName: "Observaciones",
                     access: "justificationText",
@@ -473,7 +473,7 @@ router.get('/:process/xlsx', function (req, resp) {
                 }, {
                     displayName: "Cod",
                     access: "justificationCode",
-                    type: "string"
+                    type: "number"
                 }, {
                     displayName: "Observaciones",
                     access: "justificationText",
@@ -531,7 +531,7 @@ router.get('/:process/xlsx', function (req, resp) {
                 }, {
                     displayName: "Cod",
                     access: "justificationCode",
-                    type: "string"
+                    type: "number"
                 }, {
                     displayName: "Observaciones",
                     access: "justificationText",
@@ -585,7 +585,7 @@ router.get('/:process/xlsx', function (req, resp) {
                 }, {
                     displayName: "Cod",
                     access: "justificationCode",
-                    type: "string"
+                    type: "number"
                 }, {
                     displayName: "Observaciones",
                     access: "justificationText",
@@ -667,7 +667,7 @@ router.get('/:process/xlsx', function (req, resp) {
                 }, {
                     displayName: "Cod",
                     access: "justificationCode",
-                    type: "string"
+                    type: "number"
                 }, {
                     displayName: "Observaciones",
                     access: "justificationText",
@@ -721,7 +721,7 @@ router.get('/:process/xlsx', function (req, resp) {
                 }, {
                     displayName: "Cod",
                     access: "justificationCode",
-                    type: "string"
+                    type: "number"
                 }, {
                     displayName: "Observaciones",
                     access: "justificationText",
@@ -775,7 +775,7 @@ router.get('/:process/xlsx', function (req, resp) {
                 }, {
                     displayName: "Cod",
                     access: "justificationCode",
-                    type: "string"
+                    type: "number"
                 }, {
                     displayName: "Observaciones",
                     access: "justificationText",
@@ -833,7 +833,7 @@ router.get('/:process/xlsx', function (req, resp) {
                 }, {
                     displayName: "Cod",
                     access: "justificationCode",
-                    type: "string"
+                    type: "number"
                 }, {
                     displayName: "Observaciones",
                     access: "justificationText",
@@ -895,7 +895,7 @@ router.get('/:process/xlsx', function (req, resp) {
                 }, {
                     displayName: "Cod",
                     access: "justificationCode",
-                    type: "string"
+                    type: "number"
                 }, {
                     displayName: "Observaciones",
                     access: "justificationText",
@@ -949,7 +949,7 @@ router.get('/:process/xlsx', function (req, resp) {
                 }, {
                     displayName: "Cod",
                     access: "justificationCode",
-                    type: "string"
+                    type: "number"
                 }, {
                     displayName: "Observaciones",
                     access: "justificationText",
