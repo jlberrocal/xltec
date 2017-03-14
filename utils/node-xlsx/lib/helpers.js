@@ -44,7 +44,7 @@ var buildSheetFromMatrix = function buildSheetFromMatrix(data) {
       }
       var cell = { v: data[R][C] };
       var cellRef = _xlsx2.default.utils.encode_cell({ c: C, r: R });
-      if (!isNaN(cell.v) && isNumber(cell.v)) {
+      if (isNumber(cell.v)) {
         cell.t = 'n';
       } else if (isBoolean(cell.v)) {
         cell.t = 'b';
