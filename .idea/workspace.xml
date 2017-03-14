@@ -45,7 +45,7 @@
         <entry file="file://$PROJECT_DIR$/utils/node-xlsx/lib/helpers.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="222">
-              <caret line="46" column="30" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="75" selection-end-column="35" />
+              <caret line="46" column="33" lean-forward="false" selection-start-line="46" selection-start-column="33" selection-end-line="46" selection-end-column="33" />
               <folding />
             </state>
           </provider>
@@ -350,12 +350,12 @@
       <workItem from="1486612907105" duration="610000" />
       <workItem from="1486777934221" duration="1602000" />
       <workItem from="1486843571631" duration="106000" />
-      <workItem from="1489460875554" duration="207000" />
+      <workItem from="1489460875554" duration="719000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="34351000" />
+    <option name="totallyTimeSpent" value="34863000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1358" y="-8" width="1616" height="876" extended-state="6" />
@@ -709,7 +709,7 @@
     <entry file="file://$PROJECT_DIR$/utils/node-xlsx/lib/helpers.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="222">
-          <caret line="46" column="30" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="75" selection-end-column="35" />
+          <caret line="46" column="33" lean-forward="false" selection-start-line="46" selection-start-column="33" selection-end-line="46" selection-end-column="33" />
           <folding />
         </state>
       </provider>
