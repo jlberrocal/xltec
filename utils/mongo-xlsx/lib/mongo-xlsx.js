@@ -231,6 +231,8 @@ exports.mongoData2XlsxData = function(mongoData, mongoModel) {
                 }
             }
             if(parse.type === 'number') {
+                console.log(aCell);
+                console.log(typeof aCell);
                 if(typeof aCell === 'object')
                     excelRow.push('');
                 else
