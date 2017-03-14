@@ -231,7 +231,7 @@ exports.mongoData2XlsxData = function(mongoData, mongoModel) {
                 }
             }
             if(parse.type === 'number') {
-                console.log("is NaN:", isNaN(aCell), " number is: ", aCell);
+                console.log(typeof aCell);
                 if(isNaN(aCell))
                     excelRow.push('');
                 else

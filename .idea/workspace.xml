@@ -45,7 +45,7 @@
         <entry file="file://$PROJECT_DIR$/utils/mongo-xlsx/lib/mongo-xlsx.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="251">
-              <caret line="233" column="74" lean-forward="false" selection-start-line="233" selection-start-column="74" selection-end-line="233" selection-end-column="74" />
+              <caret line="233" column="40" lean-forward="false" selection-start-line="233" selection-start-column="40" selection-end-line="233" selection-end-column="40" />
               <folding />
             </state>
           </provider>
@@ -410,12 +410,12 @@
       <workItem from="1486612907105" duration="610000" />
       <workItem from="1486777934221" duration="1602000" />
       <workItem from="1486843571631" duration="106000" />
-      <workItem from="1489460875554" duration="2592000" />
+      <workItem from="1489460875554" duration="2697000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="36736000" />
+    <option name="totallyTimeSpent" value="36841000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1358" y="-8" width="1616" height="876" extended-state="6" />
@@ -769,7 +769,7 @@
     <entry file="file://$PROJECT_DIR$/utils/mongo-xlsx/lib/mongo-xlsx.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="251">
-          <caret line="233" column="74" lean-forward="false" selection-start-line="233" selection-start-column="74" selection-end-line="233" selection-end-column="74" />
+          <caret line="233" column="40" lean-forward="false" selection-start-line="233" selection-start-column="40" selection-end-line="233" selection-end-column="40" />
           <folding />
         </state>
       </provider>
