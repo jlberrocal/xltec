@@ -296,7 +296,7 @@ router.route('/:process').get(function (req, resp) {
 router.get('/:process/xlsx', function (req, resp) {
     switch (req.params.process) {
         case 'migration':
-            Migration.find().sort({ 'date': 'asc', 'auditor': 'asc' }).select('-_id -__v').exec().then(function (data) {
+            Migration.find().sort({ 'entranceHour': 'asc', 'auditor': 'asc' }).select('-_id -__v').exec().then(function (data) {
 
                 var model = [{
                     displayName: "Auditor",
@@ -355,7 +355,7 @@ router.get('/:process/xlsx', function (req, resp) {
                 });
             });break;
         case 'baggage':
-            Baggage.find().sort({ 'date': 'asc', 'auditor': 'asc' }).select('-_id -__v').exec().then(function (data) {
+            Baggage.find().sort({ 'firstLuggageIn': 'asc', 'auditor': 'asc' }).select('-_id -__v').exec().then(function (data) {
                 var model = [{
                     displayName: "Auditor",
                     access: "auditor",
@@ -429,7 +429,7 @@ router.get('/:process/xlsx', function (req, resp) {
             });
             break;
         case 'customs':
-            Customs.find().sort({ 'date': 'asc', 'auditor': 'asc' }).select('-_id -__v').exec().then(function (data) {
+            Customs.find().sort({ 'entranceHour': 'asc', 'auditor': 'asc' }).select('-_id -__v').exec().then(function (data) {
                 var model = [{
                     displayName: "Auditor",
                     access: "auditor",
@@ -487,7 +487,7 @@ router.get('/:process/xlsx', function (req, resp) {
                 });
             });break;
         case 'entrance':
-            EntrancesTracking.find().sort({ auditor: 'asc', passengersCount: 'asc', date: 'asc' }).select('-_id -__v').exec().then(function (data) {
+            EntrancesTracking.find().sort({ auditor: 'asc', passengersCount: 'asc', entranceHour: 'asc' }).select('-_id -__v').exec().then(function (data) {
                 var model = [{
                     displayName: "Auditor",
                     access: "auditor",
@@ -545,7 +545,7 @@ router.get('/:process/xlsx', function (req, resp) {
                 });
             });break;
         case 'taxes':
-            Taxes.find().sort({ 'date': 'asc', 'auditor': 'asc' }).select('-_id -__v').exec().then(function (data) {
+            Taxes.find().sort({ 'entranceHour': 'asc', 'auditor': 'asc' }).select('-_id -__v').exec().then(function (data) {
                 var model = [{
                     displayName: "Auditor",
                     access: "auditor",
@@ -599,7 +599,7 @@ router.get('/:process/xlsx', function (req, resp) {
                 });
             });break;
         case 'checkIn':
-            CheckIn.find().sort({ 'date': 'asc', 'auditor': 'asc' }).select('-_id -__v').exec().then(function (data) {
+            CheckIn.find().sort({ 'entranceHour': 'asc', 'auditor': 'asc' }).select('-_id -__v').exec().then(function (data) {
                 var model = [{
                     displayName: "Auditor",
                     access: "auditor",
@@ -681,7 +681,7 @@ router.get('/:process/xlsx', function (req, resp) {
                 });
             });break;
         case 'security':
-            Security.find().sort({ 'date': 'asc', 'auditor': 'asc' }).select('-_id -__v').exec().then(function (data) {
+            Security.find().sort({ 'entranceHour': 'asc', 'auditor': 'asc' }).select('-_id -__v').exec().then(function (data) {
                 var model = [{
                     displayName: "Auditor",
                     access: "auditor",
@@ -735,7 +735,7 @@ router.get('/:process/xlsx', function (req, resp) {
                 });
             });break;
         case 'xRays':
-            XRays.find().sort({ 'date': 'asc', 'auditor': 'asc' }).select('-_id -__v').exec().then(function (data) {
+            XRays.find().sort({ 'entranceHour': 'asc', 'auditor': 'asc' }).select('-_id -__v').exec().then(function (data) {
                 var model = [{
                     displayName: "Auditor",
                     access: "auditor",
@@ -789,7 +789,7 @@ router.get('/:process/xlsx', function (req, resp) {
                 });
             });break;
         case 'commercial':
-            CommercialTracking.find().sort({ 'date': 'asc', 'auditor': 'asc' }).select('-_id -__v').exec().then(function (data) {
+            CommercialTracking.find().sort({ 'entranceHour': 'asc', 'auditor': 'asc' }).select('-_id -__v').exec().then(function (data) {
                 var model = [{
                     displayName: "Auditor",
                     access: "auditor",
@@ -847,7 +847,7 @@ router.get('/:process/xlsx', function (req, resp) {
                 });
             });break;
         case 'boarding':
-            Boarding.find().sort({ 'date': 'asc', 'auditor': 'asc' }).select('-_id -__v').exec().then(function (data) {
+            Boarding.find().sort({ 'entranceHour': 'asc', 'auditor': 'asc' }).select('-_id -__v').exec().then(function (data) {
                 var model = [{
                     displayName: "Auditor",
                     access: "auditor",
@@ -909,7 +909,7 @@ router.get('/:process/xlsx', function (req, resp) {
                 });
             });break;
         case 'departure':
-            DepartureTracking.find().sort({ auditor: 'asc', passengersCount: 'asc', date: 'asc', }).select('-_id -__v').exec().then(function (data) {
+            DepartureTracking.find().sort({ auditor: 'asc', passengersCount: 'asc', entranceHour: 'asc', }).select('-_id -__v').exec().then(function (data) {
                 var model = [{
                     displayName: "Auditor",
                     access: "auditor",
