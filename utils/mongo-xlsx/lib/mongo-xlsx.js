@@ -231,12 +231,11 @@ exports.mongoData2XlsxData = function(mongoData, mongoModel) {
                 }
             }
             if(parse.type === 'number') {
-                console.log(aCell);
-                console.log(typeof aCell);
-                if(typeof aCell === 'object')
+                var numb = parseInt(aCell)
+                if(isNaN(numb))
                     excelRow.push('');
                 else
-                    excelRow.push(parseInt(aCell))
+                    excelRow.push(numb)
             }
             else if(parse.type === 'float')
                 excelRow.push(parseFloat(aCell.replace(',', '.')));
