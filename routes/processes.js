@@ -36,6 +36,101 @@ var sorter = function sorter(field, reverse, first) {
     };
 };
 
+router.post('/bundle', function (req, resp) {
+    let promises = [];
+    let body = {};
+
+    Object.keys(req.body).forEach(key => {
+        if(req.body[key] && req.body[key].length > 0)
+            body[key] = req.body[key];
+    });
+
+    if(Object.keys(body).length === 0)
+        return resp.send("No se enviaron datos al servidor");
+
+    if(body.migration)
+        promises.push(Migration.create(body.migration).then(values => new Promise(resolve => resolve({
+            'Migracion': values.length
+        }))).catch(console.error));
+
+    if(body.baggage) {
+        body.baggage.forEach(item => {
+            item.justificationCode = item.justificationCode.split(',');
+            item.justificationText = item.justificationText.split(',');
+            item.lastLuggageTakenBy = item.lastLuggageTakenBy ? 'G' : 'P';
+        });
+        promises.push(Baggage.create(body.baggage).then(values => new Promise(resolve => resolve({
+            Equipaje: values.length
+        }))).catch(console.error));
+    }
+
+    if(body.customs)
+        promises.push(Customs.create(body.customs).then(values => new Promise(resolve => resolve({
+            Aduanas: values.length
+        }))));
+    if(body.entrance) {
+        promises.push(EntrancesTracking.create(body.entrance).then(values => new Promise(resolve => resolve({
+            'Seguimiento de entrada': values.length
+        }))).catch(console.error));
+    }
+
+    if(body.taxes) {
+        promises.push(Taxes.create(body.taxes).then(values => new Promise(resolve => resolve({
+            Impuestos: values.length
+        }))).catch(console.error));
+    }
+
+    if(body.checkIn) {
+        promises.push(CheckIn.create(body.checkIn).then(values => new Promise(resolve => resolve({
+            CheckIn: values.length
+        }))).catch(console.error));
+    }
+
+    if(body.security) {
+        promises.push(Security.create(body.security).then(values => new Promise(resolve => resolve({
+            Seguridad: values.length
+        }))).catch(console.error));
+    }
+
+    if(body.xRays) {
+        promises.push(XRays.create(body.xRays).then(values => new Promise(resolve => resolve({
+            'Rayos X': values.length
+        }))).catch(console.error));
+    }
+
+    if(body.commercial) {
+        promises.push(CommercialTracking.create(body.commercial).then(values => new Promise(resolve => resolve({
+            'Seguimiento comercial': values.length
+        }))).catch(console.error));
+    }
+
+    if(body.boarding) {
+        promises.push(Boarding.create(body.boarding).then(values => new Promise(resolve => resolve({
+            Abordaje: values.length
+        }))).catch(console.error));
+    }
+
+    if(body.departure) {
+        promises.push(DepartureTracking.create(body.departure).then(values => new Promise(resolve => resolve({
+            'Seguimiento de salida': values.length
+        }))).catch(console.error));
+    }
+
+    Promise.all(promises)
+        .then(results => {
+            let rest = {};
+            results.forEach(result => {
+                Object.assign(rest,result);
+            });
+            console.log(rest);
+            resp.send(rest);
+        })
+        .catch(err => {
+            console.error(err);
+            resp.status(500).send(err || 'There was an error')
+        });
+});
+
 router.route('/:process').get(function (req, resp) {
     switch (req.params.process) {
         case 'migration':

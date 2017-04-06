@@ -31,6 +31,8 @@ app.use(function (req, resp, next) {
     resp.status(404).json({error: "The route that you are trying to access is not available"});
 });
 
+mongoose.Promise = global.Promise;
+
 mongoose.connect(config.mongoUrl, function (err) {
     if(err) return console.error(err);
     console.info("Connected to DB");
