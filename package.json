@@ -9,11 +9,9 @@
     "build": "babel src -d lib"
   },
   "keywords": [
-    "xltec",
-    "backend",
-    "coriport",
-    "aeris"
+    "aeromedicion"
   ],
+  "private": true,
   "author": "jberrocal",
   "license": "AGPL-v3.0",
   "dependencies": {

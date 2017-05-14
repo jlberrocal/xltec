@@ -6,7 +6,8 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
-var boarding = new Schema({
+var boardingSchema = new Schema({
+    _id: { type: String, required: true, unique: true, index: true},
     auditor: { type: String, required: true },
     date: { type: String, required: true },
     airline: { type: String, required: true },
@@ -22,4 +23,6 @@ var boarding = new Schema({
     justificationText: { type: String }
 });
 
-module.exports = mongoose.model('boarding', boarding);
+const Boarding = mongoose.model('boarding', boardingSchema);
+
+module.exports = Boarding;

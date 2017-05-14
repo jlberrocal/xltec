@@ -6,7 +6,8 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
-var xRays = new Schema({
+var xRaysSchema = new Schema({
+    _id: { type: String, required: true, unique: true, index: true},
     auditor: { type: String, required: true },
     date: { type: String, required: true },
     availablePositions: { type: Number, required: true },
@@ -20,4 +21,6 @@ var xRays = new Schema({
     justificationText: { type: String }
 });
 
-module.exports = mongoose.model('xRays', xRays);
+const XRays = mongoose.model('xRays', xRaysSchema);
+
+module.exports = XRays;

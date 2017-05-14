@@ -6,7 +6,8 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
-var taxes = new Schema({
+var taxesSchema = new Schema({
+    _id: { type: String, required: true, unique: true, index: true},
     auditor: { type: String, required: true },
     date: { type: String, required: true },
     availablePositions: { type: Number, required: true },
@@ -20,4 +21,6 @@ var taxes = new Schema({
     justificationText: { type: String }
 });
 
-module.exports = mongoose.model('taxes', taxes);
+const Taxes = mongoose.model('taxes', taxesSchema);
+
+module.exports = Taxes;

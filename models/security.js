@@ -6,7 +6,8 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
-var security = new Schema({
+var securitySchema = new Schema({
+    _id: { type: String, required: true, unique: true, index: true},
     auditor: { type: String, required: true },
     date: { type: String, required: true },
     availablePositions: { type: Number, required: true },
@@ -20,4 +21,6 @@ var security = new Schema({
     justificationText: { type: String }
 });
 
-module.exports = mongoose.model('security', security);
+const Security = mongoose.model('security', securitySchema);
+
+module.exports = Security;

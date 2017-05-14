@@ -6,7 +6,8 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
-var baggage = new Schema({
+var baggageSchema = new Schema({
+    _id: { type: String, required: true, unique: true, index: true},
     auditor: { type: String, required: true },
     date: { type: String, required: true },
     airline: { type: String, required: true },
@@ -23,4 +24,6 @@ var baggage = new Schema({
     justificationText: [String]
 });
 
-module.exports = mongoose.model('baggage', baggage);
+const Baggage = mongoose.model('baggage', baggageSchema);
+
+module.exports = Baggage;

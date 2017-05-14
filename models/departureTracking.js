@@ -6,7 +6,8 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
-var departureTracking = new Schema({
+var departureTrackingSchema = new Schema({
+    _id: { type: String, required: true, unique: true, index: true},
     auditor: { type: String, required: true },
     date: { type: String, required: true },
     airline: { type: String, required: true },
@@ -20,4 +21,6 @@ var departureTracking = new Schema({
     justificationText: { type: String }
 });
 
-module.exports = mongoose.model('departureTracking', departureTracking);
+const DepartureTracking = mongoose.model('departureTracking', departureTrackingSchema);
+
+module.exports = DepartureTracking;

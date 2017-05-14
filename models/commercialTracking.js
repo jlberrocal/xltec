@@ -6,7 +6,8 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
-var commercialTracking = new Schema({
+var commercialTrackingSchema = new Schema({
+    _id: { type: String, required: true, unique: true, index: true},
     auditor: { type: String, required: true },
     date: { type: String, required: true },
     airline: { type: String, required: true },
@@ -21,4 +22,6 @@ var commercialTracking = new Schema({
     justificationText: { type: String }
 });
 
-module.exports = mongoose.model('commercialTracking', commercialTracking);
+const CommercialTracking = mongoose.model('commercialTracking', commercialTrackingSchema);
+
+module.exports = CommercialTracking;

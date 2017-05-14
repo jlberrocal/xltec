@@ -6,7 +6,8 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
-var checkIn = new Schema({
+var checkInSchema = new Schema({
+    _id: { type: String, required: true, unique: true, index: true},
     auditor: { type: String, required: true },
     date: { type: String, required: true },
     airline: { type: String, required: true },
@@ -27,4 +28,6 @@ var checkIn = new Schema({
     justificationText: { type: String }
 });
 
-module.exports = mongoose.model('checkIn', checkIn);
+const CheckIn = mongoose.model('checkIn', checkInSchema);
+
+module.exports = CheckIn;

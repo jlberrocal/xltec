@@ -6,7 +6,8 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
-var customs = new Schema({
+var customsSchema = new Schema({
+    _id: { type: String, required: true, unique: true, index: true},
     auditor: { type: String, required: true },
     date: { type: String, required: true },
     availablePositions: { type: Number, required: true },
@@ -21,4 +22,6 @@ var customs = new Schema({
     justificationText: { type: String }
 });
 
-module.exports = mongoose.model('customs', customs);
+const Customs = mongoose.model('customs', customsSchema);
+
+module.exports =  Customs;

@@ -22,98 +22,198 @@ const router = require('express').Router(),
 router.use(bodyParser.json({limit: 1024*1024*50}));
 router.use(bodyParser.urlencoded({ extended: true }));
 
-var sorter = function sorter(field, reverse, first) {
-    var key = first ? function (x) {
-            return first(x[field]);
-        } : function (x) {
-            return x[field];
-        };
-
-    reverse = !reverse ? 1 : -1;
-
-    return function (a, b) {
-        return a = key(a), b = key(b), reverse * ((a > b) - (b > a));
-    };
-};
-
 router.post('/bundle', function (req, resp) {
     let promises = [];
     let body = {};
 
     Object.keys(req.body).forEach(key => {
-        if(req.body[key] && req.body[key].length > 0)
+        if(req.body[key] && req.body[key].length > 0) {
+            req.body[key].forEach(item => {
+                item._id = item.Id + item.auditor + "-" + item.dateISO;
+                delete item.Id;
+            });
             body[key] = req.body[key];
+        }
     });
 
     if(Object.keys(body).length === 0)
         return resp.send("No se enviaron datos al servidor");
 
-    if(body.migration)
-        promises.push(Migration.create(body.migration).then(values => new Promise(resolve => resolve({
-            'Migracion': values.length
-        }))).catch(console.error));
+    if(body.migration) {
+        promises.push(new Promise((resolve, reject) => {
+            let bulk = Migration.collection.initializeUnorderedBulkOp();
 
+            body.migration.forEach((item) => {
+                bulk.find({_id: item._id}).upsert().updateOne({$set:item});
+            });
+
+            bulk.execute((function (err, result) {
+                if(err)
+                    return reject(err);
+                resolve({Migracion: result.nUpserted});
+            }));
+        }));
+    }
     if(body.baggage) {
-        body.baggage.forEach(item => {
-            item.justificationCode = item.justificationCode.split(',');
-            item.justificationText = item.justificationText.split(',');
-            item.lastLuggageTakenBy = item.lastLuggageTakenBy ? 'G' : 'P';
-        });
-        promises.push(Baggage.create(body.baggage).then(values => new Promise(resolve => resolve({
-            Equipaje: values.length
-        }))).catch(console.error));
+        promises.push(new Promise((resolve, reject) => {
+            let bulk = Baggage.collection.initializeUnorderedBulkOp();
+
+            body.baggage.forEach(item => {
+                item.justificationCode = item.justificationCode.split(',');
+                item.justificationText = item.justificationText.split(',');
+                item.lastLuggageTakenBy = item.lastLuggageTakenBy ? 'G' : 'P';
+
+                bulk.find({_id: item._id}).upsert().updateOne({$set:item});
+            });
+
+            bulk.execute((function (err, result) {
+                if(err)
+                    return reject(err);
+                resolve({Equipaje: result.nUpserted});
+            }));
+        }));
     }
 
     if(body.customs)
-        promises.push(Customs.create(body.customs).then(values => new Promise(resolve => resolve({
-            Aduanas: values.length
-        }))));
+        promises.push(new Promise((resolve, reject) => {
+            let bulk = Customs.collection.initializeUnorderedBulkOp();
+
+            body.customs.forEach((item) => {
+                bulk.find({_id: item._id}).upsert().updateOne({$set:item});
+            });
+
+            bulk.execute((function (err, result) {
+                if(err)
+                    return reject(err);
+                resolve({Aduanas: result.nUpserted});
+            }));
+        }));
     if(body.entrance) {
-        promises.push(EntrancesTracking.create(body.entrance).then(values => new Promise(resolve => resolve({
-            'Seguimiento de entrada': values.length
-        }))).catch(console.error));
+        promises.push(new Promise((resolve, reject) => {
+            let bulk = EntrancesTracking.collection.initializeUnorderedBulkOp();
+
+            body.entrance.forEach((item) => {
+                bulk.find({_id: item._id}).upsert().updateOne({$set:item});
+            });
+
+            bulk.execute((function (err, result) {
+                if(err)
+                    return reject(err);
+                resolve({"Seguimiento entrada": result.nUpserted});
+            }));
+        }));
     }
 
     if(body.taxes) {
-        promises.push(Taxes.create(body.taxes).then(values => new Promise(resolve => resolve({
-            Impuestos: values.length
-        }))).catch(console.error));
+        promises.push(new Promise((resolve, reject) => {
+            let bulk = Taxes.collection.initializeUnorderedBulkOp();
+
+            body.taxes.forEach((item) => {
+                bulk.find({_id: item._id}).upsert().updateOne({$set:item});
+            });
+
+            bulk.execute((function (err, result) {
+                if(err)
+                    return reject(err);
+                resolve({Impuestos: result.nUpserted});
+            }));
+        }));
     }
 
     if(body.checkIn) {
-        promises.push(CheckIn.create(body.checkIn).then(values => new Promise(resolve => resolve({
-            CheckIn: values.length
-        }))).catch(console.error));
+        promises.push(new Promise((resolve, reject) => {
+            let bulk = CheckIn.collection.initializeUnorderedBulkOp();
+
+            body.checkIn.forEach((item) => {
+                bulk.find({_id: item._id}).upsert().updateOne({$set:item});
+            });
+
+            bulk.execute((function (err, result) {
+                if(err)
+                    return reject(err);
+                resolve({CheckIn: result.nUpserted});
+            }));
+        }));
     }
 
     if(body.security) {
-        promises.push(Security.create(body.security).then(values => new Promise(resolve => resolve({
-            Seguridad: values.length
-        }))).catch(console.error));
+        promises.push(new Promise((resolve, reject) => {
+            let bulk = Security.collection.initializeUnorderedBulkOp();
+
+            body.security.forEach((item) => {
+                bulk.find({_id: item._id}).upsert().updateOne({$set:item});
+            });
+
+            bulk.execute((function (err, result) {
+                if(err)
+                    return reject(err);
+                resolve({Seguridad: result.nUpserted});
+            }));
+        }));
     }
 
     if(body.xRays) {
-        promises.push(XRays.create(body.xRays).then(values => new Promise(resolve => resolve({
-            'Rayos X': values.length
-        }))).catch(console.error));
+        promises.push(new Promise((resolve, reject) => {
+            let bulk = XRays.collection.initializeUnorderedBulkOp();
+
+            body.xRays.forEach((item) => {
+                bulk.find({_id: item._id}).upsert().updateOne({$set:item});
+            });
+
+            bulk.execute((function (err, result) {
+                if(err)
+                    return reject(err);
+                resolve({"Rayos X": result.nUpserted});
+            }));
+        }));
     }
 
     if(body.commercial) {
-        promises.push(CommercialTracking.create(body.commercial).then(values => new Promise(resolve => resolve({
-            'Seguimiento comercial': values.length
-        }))).catch(console.error));
+        promises.push(new Promise((resolve, reject) => {
+            let bulk = CommercialTracking.collection.initializeUnorderedBulkOp();
+
+            body.commercial.forEach((item) => {
+                bulk.find({_id: item._id}).upsert().updateOne({$set:item});
+            });
+
+            bulk.execute((function (err, result) {
+                if(err)
+                    return reject(err);
+                resolve({"Seguimiento comercial": result.nUpserted});
+            }));
+        }));
     }
 
     if(body.boarding) {
-        promises.push(Boarding.create(body.boarding).then(values => new Promise(resolve => resolve({
-            Abordaje: values.length
-        }))).catch(console.error));
+        promises.push(new Promise((resolve, reject) => {
+            let bulk = Boarding.collection.initializeUnorderedBulkOp();
+
+            body.boarding.forEach((item) => {
+                bulk.find({_id: item._id}).upsert().updateOne({$set:item});
+            });
+
+            bulk.execute((function (err, result) {
+                if(err)
+                    return reject(err);
+                resolve({Abordaje: result.nUpserted});
+            }));
+        }));
     }
 
     if(body.departure) {
-        promises.push(DepartureTracking.create(body.departure).then(values => new Promise(resolve => resolve({
-            'Seguimiento de salida': values.length
-        }))).catch(console.error));
+        promises.push(new Promise((resolve, reject) => {
+            let bulk = DepartureTracking.collection.initializeUnorderedBulkOp();
+
+            body.departure.forEach((item) => {
+                bulk.find({_id: item._id}).upsert().updateOne({$set:item});
+            });
+
+            bulk.execute((function (err, result) {
+                if(err)
+                    return reject(err);
+                resolve({"Seguimiento salida": result.nUpserted});
+            }));
+        }));
     }
 
     Promise.all(promises)
@@ -122,7 +222,6 @@ router.post('/bundle', function (req, resp) {
             results.forEach(result => {
                 Object.assign(rest,result);
             });
-            console.log(rest);
             resp.send(rest);
         })
         .catch(err => {
