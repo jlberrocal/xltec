@@ -22,6 +22,8 @@ router.route('/')
         console.log("someone is attempting to authenticate");
         Users.findOne().where({ username: req.body.username }).populate('allowedDevices').populate('permissions').exec().then(function (user) {
             if (!user) return resp.status(404).json(invalid);
+            console.log(req.body);
+            console.log(user.allowedDevices);
             if (req.body.mac) {
                 let allowedDevices = user.allowedDevices.map(function (device) {
                     return device.mac;
