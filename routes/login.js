@@ -22,7 +22,7 @@ router.route('/')
         Users.findOne().where({ username: req.body.username }).populate('allowedDevices').populate('permissions').exec().then(function (user) {
             if (!user) return resp.status(404).json(invalid);
 
-            console.log(`User ${req.body.user} is attempting to authenticate from ${req.body.mac ? 'a device [' + req.body.mac + ']' : 'the web page'}`);
+            console.log(`User ${req.body.username} is attempting to authenticate from ${req.body.mac ? 'a device [' + req.body.mac + ']' : 'the web page'}`);
             if (req.body.mac) {
                 let allowedDevices = user.allowedDevices.map(function (device) {
                     return device.mac;
