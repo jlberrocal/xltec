@@ -50,7 +50,7 @@ router.post('/bundle', function (req, resp) {
             bulk.execute((function (err, result) {
                 if(err)
                     return reject(err);
-                resolve({Migracion: result.nUpserted});
+                resolve({'Migracion Entrada': result.nUpserted});
             }));
         }));
     }
@@ -147,7 +147,7 @@ router.post('/bundle', function (req, resp) {
             bulk.execute((function (err, result) {
                 if(err)
                     return reject(err);
-                resolve({Seguridad: result.nUpserted});
+                resolve({'Migración Salida': result.nUpserted});
             }));
         }));
     }

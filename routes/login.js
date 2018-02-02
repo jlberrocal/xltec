@@ -19,11 +19,10 @@ router.route('/')
         resp.json({message: 'Exactly what are you trying to do?'});
     })
     .post(function (req, resp) {
-        console.log("someone is attempting to authenticate");
         Users.findOne().where({ username: req.body.username }).populate('allowedDevices').populate('permissions').exec().then(function (user) {
             if (!user) return resp.status(404).json(invalid);
-            console.log(req.body);
-            console.log(user.allowedDevices);
+
+            console.log(`User ${req.body.user} is attempting to authenticate from ${req.body.mac ? 'a device [' + req.body.mac + ']' : 'the web page'}`);
             if (req.body.mac) {
                 let allowedDevices = user.allowedDevices.map(function (device) {
                     return device.mac;
@@ -38,6 +37,7 @@ router.route('/')
                 else if (!allowedByDate) return resp.status(403).json({message: 'Sorry ' + user.name + ' but you are not allowed to use the application today'});
             }
             user.comparePassword(req.body.password).then(function () {
+                console.info(`${req.body.username} was authenticated at ${moment().format('hh:MM:ss')}`);
                 let token = jwt.sign({
                     name: user.name,
                     username: user.username,
