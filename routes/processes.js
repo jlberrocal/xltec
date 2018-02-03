@@ -543,7 +543,7 @@ router.get('/:process/xlsx', function (req, resp) {
                 }];
                 xlsx.mongoData2Xlsx(data, model, function (err, info) {
                     if (err) return resp.status(500).end();
-                    resp.download(info.fullPath, 'migracion.xlsx', function () {
+                    resp.download(info.fullPath, 'migracion-entrada.xlsx', function () {
                         fs.unlinkSync(info.fullPath);
                     });
                 });
@@ -923,7 +923,7 @@ router.get('/:process/xlsx', function (req, resp) {
                 }];
                 xlsx.mongoData2Xlsx(data, model, function (err, info) {
                     if (err) return resp.status(500).end();
-                    resp.download(info.fullPath, 'security.xlsx', function () {
+                    resp.download(info.fullPath, 'migracion-salida.xlsx', function () {
                         fs.unlinkSync(info.fullPath);
                     });
                 });
