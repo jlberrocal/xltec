@@ -25,7 +25,7 @@ router.route('/')
             console.log(`User ${req.body.username} is attempting to authenticate from ${req.body.mac ? 'a device [' + req.body.mac + ']' : 'the web page'}`);
             if (req.body.mac) {
                 let allowedDevices = user.allowedDevices.map(function (device) {
-                    return device.mac;
+                    return device.mac.toLowerCase();
                 });
 
                 let allowedByDate = user.permissions.some(function (permission) {
@@ -33,7 +33,7 @@ router.route('/')
                 });
 
                 if (user.roles.indexOf('audit') === -1) return resp.status(403).json({ message: 'Sorry ' + user.name + " but you don't have access as auditor" });
-                else if (allowedDevices.indexOf(req.body.mac) === -1) return resp.status(403).json({ message: 'Sorry ' + user.name + " but this device is not authorized" });
+                else if (allowedDevices.indexOf(req.body.mac.toLowerCase()) === -1) return resp.status(403).json({ message: 'Sorry ' + user.name + " but this device is not authorized" });
                 else if (!allowedByDate) return resp.status(403).json({message: 'Sorry ' + user.name + ' but you are not allowed to use the application today'});
             }
             user.comparePassword(req.body.password).then(function () {
