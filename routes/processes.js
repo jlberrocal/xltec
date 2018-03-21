@@ -899,7 +899,7 @@ router.get('/:process/xlsx', function (req, resp) {
                 }, {
                     displayName: "Ventanilla Atención",
                     access: "attentionWindow",
-                    type: "string"
+                    type: "number"
                 }, {
                     displayName: "Proceso",
                     access: "process",
