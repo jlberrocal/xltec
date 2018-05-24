@@ -14,6 +14,7 @@ var securitySchema = new Schema({
     process: { type: String, required: true, enum: ['F', 'A'] },
     passengersCount: { type: String, required: true },
     openedPositions: { type: Number, required: true },
+    attentionWindow: {type: Number },
     entranceHour: { type: String, required: true },
     departHour: { type: String, required: true },
     totalTime: { type: String, required: true },
