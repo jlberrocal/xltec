@@ -15,4 +15,8 @@ const activitySchema = new Schema({
 
 const Activity = mongoose.model('activity', activitySchema);
 
+/**
+ * Export model definition
+ * @type {Model}
+ */
 module.exports = Activity;

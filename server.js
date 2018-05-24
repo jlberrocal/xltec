@@ -13,9 +13,13 @@ let express         = require('express'),
     processes       = require('./routes/processes'),
     codes           = require('./routes/codes'),
     jwtMiddleware   = require('./middleware/jwt'),
-    mongoose        = require('mongoose');
+    mongoose        = require('mongoose'),
+		bodyParser			= require('body-parser');
 
 app.use(cors());
+app.use(bodyParser.json({ limit: 1024*1024*50 }));
+app.use(bodyParser.urlencoded({ extended: true }));
+
 app.use('/api/login', login);
 app.use('/api/users', jwtMiddleware, users);
 app.use('/api/devices', jwtMiddleware, devices);
@@ -30,8 +34,6 @@ app.get('/api', function (req, resp) {
 app.use(function (req, resp, next) {
     resp.status(404).json({error: "The route that you are trying to access is not available"});
 });
-
-//mongoose.Promise = global.Promise;
 
 mongoose.connect(config.mongoUrl, function (err) {
     if(err) return console.error(err);

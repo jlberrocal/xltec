@@ -3,44 +3,42 @@
  */
 'use strict';
 
-var mongoose = require('mongoose'),
-    schema = mongoose.Schema,
-    bcrypt = require('bcryptjs'),
-    SALT_WORK_FACTOR = 10;
+const mongoose = require('mongoose'),
+	bcrypt = require('bcryptjs'),
+	SALT_WORK_FACTOR = 10;
+const {Schema} = mongoose;
 
-var user = new schema({
-    name: { type: String, required: "The name is a required value" },
-    username: { type: String, required: "The username is  a required value", index: { unique: true } },
-    password: { type: String, required: "The password is a required value" },
-    roles: { type: Array, required: "You must provide at least one role" },
-    allowedDevices: [{ type: schema.Types.ObjectId, ref: 'Device' }],
-    permissions: [{ type: schema.Types.ObjectId, ref: 'Permission' }]
+const user = new Schema({
+	name: {type: String, required: "The name is a required value"},
+	username: {type: String, required: "The username is  a required value", index: {unique: true}},
+	password: {type: String, required: "The password is a required value"},
+	roles: {type: Array, required: "You must provide at least one role"},
+	allowedDevices: [{type: Schema.Types.ObjectId, ref: 'Device'}],
+	permissions: [{type: Schema.Types.ObjectId, ref: 'Permission'}]
 });
 
-user.pre('save', function (next) {
-    var user = this;
+user.pre('save', async function (next) {
+	let user = this;
 
-    if (!user.isModified('password')) return next();
-
-    bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
-        if (err) return next(err);
-
-        bcrypt.hash(user.password, salt, function (err, hash) {
-            if (err) return next(err);
-
-            user.password = hash;
-            next();
-        });
-    });
+	if(!user.isModified('password'))
+		return next();
+	try {
+		let salt = await bcrypt.genSalt(SALT_WORK_FACTOR);
+		user.password = await bcrypt.hash(user.password, salt);
+		next();
+	} catch(e){
+		console.error(e);
+	}
 });
 
-user.methods.comparePassword = function (password) {
-    var user = this;
-    return new Promise(function (success, error) {
-        bcrypt.compare(password, user.password, function (err, match) {
-            if (err) return error(err);else if (match) return success();else return error({ message: "Invalid password" });
-        });
-    });
+user.methods.comparePassword = async function(password){
+	let user = this;
+	return bcrypt.compare(password, user.password)
 };
 
-module.exports = mongoose.model('User', user);
+const User = mongoose.model('User', user);
+/**
+ * export model definition
+ * @type {Model}
+ */
+module.exports = User;

@@ -3,22 +3,18 @@
  */
 'use strict';
 
-var router = require('express').Router(),
-    bodyParser = require('body-parser'),
+const router = require('express').Router(),
     Codes = require('../models/codes');
 
-router.use(bodyParser.json());
-router.use(bodyParser.urlencoded({ extended: true }));
-
-router.route('/').get(function (req, resp) {
-    Codes.find().sort({ code: 'asc' }).exec().then(function (codes) {
-        if (codes.length > 0) return resp.json(codes);
-        resp.json({ message: "There is no justification codes" });
-    }, function (err) {
-        return resp.json(err).status(500);
-    });
+router.route('/').get(async (req, resp) => {
+	try {
+		const codes = await Codes.find().sort({ code: 'asc' }).exec();
+		resp.send(codes.length > 0 ? codes : { message: "There is no justification codes" })
+	} catch(e){
+		return resp.json(e).status(500);
+	}
 }).post(function (req, resp) {
-    var code = new Codes(req.body);
+    const code = new Codes(req.body);
     code.save().then(function () {
         return resp.json({ message: "Code stored successfully" });
     }, function (err) {

@@ -20,51 +20,55 @@ router.route('/')
 		resp.json({message: 'Exactly what are you trying to do?'});
 	})
 	.post(async (req, resp) =>{
+		const {username, mac, password, rememberMe} = req.body;
+		console.log(`User ${username} is attempting to authenticate from ${mac ? 'a device [' + mac + ']' : 'the web page'}`);
+
 		const act = new Activity({
-			auditor: req.body.username,
+			auditor: username,
 			date: new Date(),
-			device: req.body.mac
+			device: mac
 		});
+
 		const attempt = await act.save();
 
-		Users.findOne().where({username: req.body.username}).populate('allowedDevices').populate('permissions').exec().then((user) =>{
-			if(!user){
-				return resp.status(404).json(invalid);
+		const user = await Users.findOne().where({username}).populate('allowedDevices').populate('permissions').exec();
+		if(!user){
+			return resp.status(404).json(invalid);
+		}
+
+		let success = await user.comparePassword(password);
+		if(!success){
+			return resp.send({message: 'invalid credentials'})
+		}
+
+		if(mac){
+			let allowedDevices = user.allowedDevices.map((device) => device.mac.toLowerCase());
+
+			let allowedByDate = user.permissions.some((permission) => moment().isBetween(permission.from, permission.until));
+
+			if(user.roles.indexOf('audit') === -1){
+				return resp.status(403).json({message: `Sorry ${user.name} but you don't have access as auditor`});
+			}else if(allowedDevices.indexOf(req.body.mac.toLowerCase()) === -1){
+				return resp.status(403).json({message: `Sorry ${user.name} but this device is not authorized`});
+			}else if(!allowedByDate){
+				return resp.status(403).json({message: `Sorry ${user.name} but you are not allowed to use the application today`});
 			}
+		}
 
-			console.log(`User ${req.body.username} is attempting to authenticate from ${req.body.mac ? 'a device [' + req.body.mac + ']' : 'the web page'}`);
-			if(req.body.mac){
-				let allowedDevices = user.allowedDevices.map(function(device){
-					return device.mac.toLowerCase();
-				});
+		attempt.success = true;
+		await attempt.save();
 
-				let allowedByDate = user.permissions.some(function(permission){
-					return moment().isBetween(permission.from, permission.until);
-				});
-
-				if(user.roles.indexOf('audit') === -1) return resp.status(403).json({message: 'Sorry ' + user.name + " but you don't have access as auditor"});
-				else if(allowedDevices.indexOf(req.body.mac.toLowerCase()) === -1) return resp.status(403).json({message: 'Sorry ' + user.name + " but this device is not authorized"});
-				else if(!allowedByDate) return resp.status(403).json({message: 'Sorry ' + user.name + ' but you are not allowed to use the application today'});
-			}
-			user.comparePassword(req.body.password).then(async () => {
-				attempt.success = true;
-				await attempt.save();
-
-				console.info(`${req.body.username} was authenticated at ${moment().format('hh:MM:ss')}`);
-				let token = jwt.sign({
-					name: user.name,
-					username: user.username,
-					roles: user.roles
-				}, config.jwt, {
-					expiresIn: req.body.rememberMe ? 3600 * 24 * 31 : req.body.mac ? '24h' : '20h'
-				});
-				resp.setHeader('x-auth-token', token);
-				resp.setHeader('Access-Control-Expose-Headers', 'x-auth-token');
-				resp.end("Bienvenido " + user.name);
-			}, function(err){
-				return resp.status(400).json(err);
-			});
+		console.info(`${username} was authenticated at ${moment().format('hh:MM:ss')}`);
+		let token = jwt.sign({
+			name: user.name,
+			username: user.username,
+			roles: user.roles
+		}, config.jwt, {
+			expiresIn: rememberMe ? 3600 * 24 * 31 : mac ? '24h' : '20h'
 		});
+		resp.setHeader('x-auth-token', token);
+		resp.setHeader('Access-Control-Expose-Headers', 'x-auth-token');
+		resp.end("Bienvenido " + user.name);
 	});
 
 module.exports = router;
