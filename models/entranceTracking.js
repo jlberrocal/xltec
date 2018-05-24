@@ -7,7 +7,7 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 var entranceTrackingSchema = new Schema({
-    _id: { type: String, required: true, unique: true, index: true},
+    _id: { type: String, required: true },
     auditor: { type: String, required: true },
     date: { type: String, required: true },
     airline: { type: String, required: true },

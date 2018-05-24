@@ -7,7 +7,7 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 var migrationSchema = new Schema({
-    _id: { type: String, required: true, unique: true, index: true},
+    _id: { type: String, required: true },
     auditor: { type: String, required: true },
     date: { type: String, required: true },
     availablePositions: { type: Number, required: true },

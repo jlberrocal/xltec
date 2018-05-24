@@ -15,14 +15,13 @@
   "author": "jberrocal",
   "license": "AGPL-v3.0",
   "dependencies": {
-    "bcryptjs": "^2.3.0",
-    "body-parser": "^1.15.1",
-    "cors": "^2.7.1",
-    "express": "^4.13.4",
-    "jsonwebtoken": "^7.0.0",
-    "moment": "^2.17.1",
-    "mongoose": "^4.4.19",
-    "path": "^0.12.7",
-    "xlsx": "^0.8.2"
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.4",
+    "express": "^4.16.3",
+    "jsonwebtoken": "^8.2.1",
+    "moment": "^2.22.1",
+    "mongoose": "^5.1.2",
+    "xlsx": "^0.12.13"
   }
 }
