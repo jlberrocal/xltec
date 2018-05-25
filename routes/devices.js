@@ -3,62 +3,63 @@
  */
 'use strict';
 
-var router = require('express').Router(),
-    bodyParser = require('body-parser'),
+const router = require('express').Router({
+        mergeParams: true
+    }),
     Devices = require('../models/devices');
 
-router.use(bodyParser.json());
-router.use(bodyParser.urlencoded({ extended: true }));
-
 router.route('/')
-    .get(function (req, resp) {
-        Devices.find().populate({
-            path: 'linkedUsers',
-            select: '-password -__v -allowedDevices -roles -username'
-        }).exec().then(function (devices) {
-            if (devices.length > 0) return resp.json(devices);
-            resp.json({ message: "There is no devices registered" });
-        }, function (err) {
-            return resp.json(err).status(500);
-        });
+    .get(async (req, resp) => {
+        const devices = await Devices.find()
+            .populate({
+                path: 'linkedUsers',
+                select: '-password -__v -allowedDevices -roles -username'
+            })
+            .exec();
+        resp.json(devices.length > 0 ? devices : {message: "There is no devices registered"});
     })
-    .post(function (req, resp) {
-        var device = new Devices(req.body);
+    .post(async (req, resp) => {
+        const device = new Devices(req.body);
         device.save().then(function () {
-            return resp.json({ message: "Device stored successfully" });
+            return resp.json({message: "Device stored successfully"});
         }, function (err) {
             return resp.status(500).json(err);
         });
     });
 
 router.route('/:id')
-    .get(function (req, resp) {
-        Devices.findById(req.params.id).then(function (device) {
-            if (device) return resp.json(device);
-            resp.json({ message: "Device not found" });
-        }, function (err) {
-            return resp.json(err).status(500);
-        });
+    .get(async (req, resp) => {
+        let device = await Devices.findById(req.params.id).exec();
+        if (!device) {
+            resp.status(404);
+        }
+        resp.json(device ? {message: "Device not found"} : device);
     })
-    .put(function (req, resp) {
-        Devices.findById(req.params.id).then(function (device) {
-            if (!device) return resp.json({ message: "Device not found" });
-            if (req.body.name) device.name = req.body.name;
-            if (req.body.mac) device.mac = req.body.mac;
-            if (req.body.users) device.linkedUsers = req.body.users;
-            device.save().then(function () {
-                return resp.json({ message: "Device updated successfully" });
-            }, function (err) {
-                return resp.status(500).json(err);
-            });
-        }, function (err) {
-            return resp.status(500).json(err);
-        });
+    .put(async (req, resp) => {
+        let {name, mac, users} = req.body;
+        let {id} = req.params;
+        let device = Devices.findById(id).exec();
+
+        if (!device) {
+            return resp.json({message: "Device not found"}).status(404);
+        }
+        device.name = name;
+        device.mac = mac;
+        device.linkedUsers = users;
+
+        device.save()
+            .then(() => resp.json({message: "Device updated successfully"}))
+            .catch(err => resp.status(500).json(err));
     })
-    .delete(function (req, resp) {
-        Devices.remove({ _id: req.params.id }, function (err) {
-            if(err) return resp.error(err);
-            return resp.json({ message: "Device removed successfully" });
+    .delete(async (req, resp) => {
+        try {
+            await Devices.remove({_id: req.params.id})
+        } catch (e) {
+
+        }
+        Devices.remove({_id: req.params.id}, function (err) {
+            if (err) return resp.error(err);
+            return resp.json({message: "Device removed successfully"});
         });
     });
 

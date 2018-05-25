@@ -6,13 +6,19 @@
  */
 'use strict';
 
-var mongoose = require('mongoose'),
-    Schema = mongoose.Schema;
+const mongoose = require('mongoose'),
+    {Schema} = mongoose;
 
-var codes = new Schema({
+const codes = new Schema({
   code: { type: String, required: true, index: { unique: true } },
   observation: { type: String, default: ' ' },
   process: { type: String, required: true }
 });
 
-module.exports = mongoose.model('Code', codes);
+const Codes = mongoose.model('Code', codes);
+
+/**
+ * Export model definition
+ * @type {Model}
+ */
+module.exports = Codes;
