@@ -6,17 +6,21 @@
 const router = require('express').Router({
 		mergeParams: true
 	}),
-	Devices = require('../models/devices');
+	Devices = require('../models/devices'),
+	parseDeviceFilters = require('../utils/parseFilters');
+require('../utils/paginator');
+require('../utils/sorter');
 
 router.route('/')
 	.get(async (req, resp) =>{
-		const devices = await Devices.find()
-			.populate({
-				path: 'linkedUsers',
-				select: '-password -__v -allowedDevices -roles -username'
-			})
-			.exec();
-		resp.json(devices.length > 0 ? devices : {message: "There is no devices registered"});
+		let {page, pageSize, filters, sort} = req.query;
+		console.log(filters);
+		let query = Devices.find(parseDeviceFilters(filters))
+			.populate('linkedUsers', '_id name');
+		query = query.paginate(page, pageSize).sorter(sort);
+
+		const devices = await query.exec();
+		resp.json(devices);
 	})
 	.post(async (req, resp) =>{
 		const device = new Devices(req.body);
