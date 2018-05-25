@@ -3,118 +3,78 @@
  */
 'use strict';
 
-var router = require('express').Router(),
-	bodyParser = require('body-parser'),
+const router = require('express').Router({
+		mergeParams: true
+	}),
 	Users = require('../models/users'),
 	Devices = require('../models/devices'),
 	Permissions = require('../models/permissions');
 
-router.use(bodyParser.json());
-router.use(bodyParser.urlencoded({ extended: true }));
+router.route('/')
+	.get(async (req, resp) =>{
+		let users = await Users.find().select('-_id name username roles allowedDevices').populate({
+			path: 'allowedDevices',
+			select: '-__v'
+		}).exec();
 
-router.route('/').get(function (req, resp) {
-	Users.find().select('-_id name username roles allowedDevices').populate({
-		path: 'allowedDevices',
-		select: '-__v'
-	}).exec().then(function (user) {
-		if (user) return resp.json(user);
-		resp.json({ message: "There is no users at this moment" });
-	}, function (err) {
-		return resp.json(err).status(500);
+		resp.json(users);
+	})
+	.post(function(req, resp){
+		if(req.body){
+			let user = new Users(req.body);
+			user.save()
+				.then(() => resp.json({message: "User saved successfully"}))
+				.catch((err) => resp.json(err));
+		}
 	});
-}).post(function (req, resp) {
-	if (req.body) {
-		var User = new Users(req.body);
-		User.save().then(function () {
-			return resp.json({ message: "User saved successfully" });
-		}, function (err) {
-			return resp.json(err);
-		});
-	}
-});
 
-router.route('/:username').get(function (req, resp) {
-	Users.findOne({ username: req.params.username }).then(function (user) {
-		if (user) return resp.json({
-			id: user._id,
-			username: user.username,
-			name: user.name,
-			allowedDevices: user.allowedDevices,
-			roles: user.roles
-		});
-		resp.json({ error: "User not found" }).status(404);
-	}, function (err) {
-		return resp.error(err);
-	});
-}).put(function (req, resp) {
-	Users.findOne({ username: req.params.username }).then(function (user) {
-		if (user && req.body) {
-			var body = req.body;
-			Devices.unlinkUser(user._id, function(){
-				if (body.username) user.username = body.username;
-				if (body.name) user.name = body.name;
-				if (body.password) {
-					user.comparePassword(body.password).then(function () {
-						return user.password = body.password;
-					}, function (err) {
-						return resp.json(err);
-					});
-				}
-				if (body.roles) user.roles = body.roles;
-				if (body.allowedDevices) {
-					user.allowedDevices = body.allowedDevices;
-					body.allowedDevices.forEach(function (device) {
-						Devices.addUser(device, user._id);
-					});
-				}
-				if (body.permissions) {
-					body.permissions.forEach(function (permission) {
-						Permissions.findById(permission).then(function (item) {
-							item.users.push(user._id);
-							item.save.exec();
-						});
-					});
-				}
+router.route('/:username')
+	.get(async (req, resp) =>{
+		let user = await Users.findOne({username: req.params.username}).select('_id username name allowedDevices roles').exec();
 
-				user.save().then(function () {
-					return resp.json({ message: "User updated successfully" });
-				}, function (err) {
-					return resp.status(500).json(err);
-				});
-			});
-		} else return resp.json({ message: "user not found" }).status(500);
-	}, function (err) {
-		return resp.json(err);
-	});
-}).delete(function (req, resp) {
-	Users.remove({ username: req.params.username }).exec().then(function () {
-		return resp.json({ message: 'user deleted successfully' });
-	}, function (err) {
-		return resp.json(err);
-	});
-}).patch(function (req, resp) {
-	Users.findOne({ username: req.params.username }).then(function (user) {
-		if (!user) return resp.status(404).json({ message: "user not found" });
-		user.comparePassword(req.body.old).then(function () {
-			user.password = req.body.new;
-			return user.save().then(function () {
-				return resp.json({ message: "Password changed successfully" });
-			}, function (err) {
-				return resp.json(err);
-			});
-		}, function () {
-			return resp.status(400).json({ message: "Contraseña incorrecta" });
+		if(!user){
+			return resp.json({error: "User not found"}).status(404);
+		}
+		resp.json(user);
+	})
+	.put(async (req, resp) =>{
+		let user = await Users.findOne({username: req.params.username}).exec();
+		if(!user){
+			return resp.json({error: "User not found"}).status(404);
+		}
+
+		let {username, name, password, roles, allowedDevices, permissions} = req.body;
+		await Devices.unlinkUser(user._id);
+
+		user.username = username;
+		user.name = name;
+		user.password = password;
+		user.roles = roles;
+		user.allowedDevices = allowedDevices.map(async device =>{
+			await Devices.addUser(device, user._id);
+			return device;
 		});
-	}, function (err) {
-		return resp.status(404).json(err);
-	});
-});
-router.route('/auditors/json').get(function (req, resp) {
-	Users.find({ roles: { $in: ['audit'] } }).then(function (result) {
-		return resp.json(result);
-	}, function (err) {
-		return resp.error(err);
-	});
-});
+
+		user.permissions = permissions.map(async permission =>{
+			let permissionDoc = await Permissions.findById(permission).exec();
+			permissionDoc.users.push(user._id);
+			await permissionDoc.save();
+			return permission;
+		});
+
+		user.save()
+			.then(() => resp.json({message: "User updated successfully"}))
+			.catch((err) => resp.status(500).json(err));
+	})
+	.delete((req, resp) => Users.remove({username: req.params.username}).exec()
+		.then(() => resp.json({message: 'user deleted successfully'}))
+		.catch(err => resp.json(err))
+	);
+
+router.route('/auditors/json')
+	.get((req, resp) => Users.find({roles: {$in: ['audit']}})
+		.then(result => resp.json(result))
+		.catch(err => resp.error(err))
+	);
 
 module.exports = router;

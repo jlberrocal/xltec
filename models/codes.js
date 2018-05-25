@@ -7,12 +7,12 @@
 'use strict';
 
 const mongoose = require('mongoose'),
-    {Schema} = mongoose;
+	{Schema} = mongoose;
 
 const codes = new Schema({
-  code: { type: String, required: true, index: { unique: true } },
-  observation: { type: String, default: ' ' },
-  process: { type: String, required: true }
+	code: {type: String, required: true, index: {unique: true}},
+	observation: {type: String, default: ' '},
+	process: {type: String, required: true}
 });
 
 const Codes = mongoose.model('Code', codes);

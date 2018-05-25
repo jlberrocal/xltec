@@ -3,25 +3,19 @@
  */
 'use strict';
 
-let router = require('express').Router(),
-	bodyParser = require('body-parser'),
+let router = require('express').Router({
+		mergeParams: true
+	}),
 	jwt = require('jsonwebtoken'),
 	moment = require('moment'),
-	cors = require('cors'),
 	config = require('../config/params'),
 	Users = require('../models/users'),
 	Activity = require('../models/activity'),
 	invalid = {message: "Invalid credentials"};
-router.use(bodyParser.json());
-router.use(cors());
 
 router.route('/')
-	.get(function(req, resp){
-		resp.json({message: 'Exactly what are you trying to do?'});
-	})
 	.post(async (req, resp) =>{
 		const {username, mac, password, rememberMe} = req.body;
-		console.log(`User ${username} is attempting to authenticate from ${mac ? 'a device [' + mac + ']' : 'the web page'}`);
 
 		const act = new Activity({
 			auditor: username,
@@ -31,14 +25,14 @@ router.route('/')
 
 		const attempt = await act.save();
 
-		const user = await Users.findOne().where({username}).populate('allowedDevices').populate('permissions').exec();
+		const user = await Users.findOne().where('username', username).populate('allowedDevices').populate('permissions').exec();
 		if(!user){
 			return resp.status(404).json(invalid);
 		}
 
 		let success = await user.comparePassword(password);
 		if(!success){
-			return resp.send({message: 'invalid credentials'})
+			return resp.send({message: 'invalid credentials'});
 		}
 
 		if(mac){
@@ -47,7 +41,7 @@ router.route('/')
 			let allowedByDate = user.permissions.some((permission) => moment().isBetween(permission.from, permission.until));
 
 			if(user.roles.indexOf('audit') === -1){
-				return resp.status(403).json({message: `Sorry ${user.name} but you don't have access as auditor`});
+				return resp.status(403).json({message: `Sorry ${user.name} but you don't have access as an auditor`});
 			}else if(allowedDevices.indexOf(req.body.mac.toLowerCase()) === -1){
 				return resp.status(403).json({message: `Sorry ${user.name} but this device is not authorized`});
 			}else if(!allowedByDate){
@@ -58,7 +52,6 @@ router.route('/')
 		attempt.success = true;
 		await attempt.save();
 
-		console.info(`${username} was authenticated at ${moment().format('hh:MM:ss')}`);
 		let token = jwt.sign({
 			name: user.name,
 			username: user.username,

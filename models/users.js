@@ -17,28 +17,40 @@ const user = new Schema({
 	permissions: [{type: Schema.Types.ObjectId, ref: 'Permission'}]
 });
 
-user.pre('save', async function (next) {
+/**
+ * Compare a plain password with hashed equivalent
+ * @param {string} password
+ * @returns {Promise<boolean>}
+ */
+function comparePassword(password) {
+	let _user = this;
+	return bcrypt.compare(password, _user.password)
+}
+
+/**
+ * Middleware before saving a user model
+ * @param next
+ * @returns {Promise<*>}
+ */
+async function preSave(next) {
 	let user = this;
 
 	if(!user.isModified('password'))
 		return next();
-	try {
-		let salt = await bcrypt.genSalt(SALT_WORK_FACTOR);
-		user.password = await bcrypt.hash(user.password, salt);
-		next();
-	} catch(e){
-		console.error(e);
-	}
-});
 
-user.methods.comparePassword = async function(password){
-	let user = this;
-	return bcrypt.compare(password, user.password)
-};
+	let salt = await bcrypt.genSalt(SALT_WORK_FACTOR);
+	user.password = await bcrypt.hash(user.password, salt);
+
+	next();
+}
+
+user.pre('save', preSave);
+user.methods.comparePassword = comparePassword;
 
 const User = mongoose.model('User', user);
+
 /**
- * export model definition
+ * Export model definition
  * @type {Model}
  */
 module.exports = User;

@@ -4,59 +4,72 @@
 'use strict';
 
 const mongoose = require('mongoose'),
-    {Schema} = mongoose;
+	{Schema} = mongoose;
 
 const devices = new Schema({
-    name: {type: String, required: "You must provide a name for this device"},
-    mac: {type: String, required: "The mac of the device a required attribute", index: {unique: true}},
-    linkedUsers: [{type: Schema.Types.ObjectId, ref: 'User'}]
+	name: {type: String, required: "You must provide a name for this device"},
+	mac: {type: String, required: "The mac of the device a required attribute", index: {unique: true}},
+	linkedUsers: [{type: Schema.Types.ObjectId, ref: 'User'}]
 });
 
-devices.statics.findByUser = function (user) {
-    return this.find({linkedUsers: user}).exec();
-    /*return new Promise(function (resolve, reject) {
-        _this.find({linkedUsers: user}, function (err, data) {
-            if (err) return reject(err);
-            return resolve(data);
-        })
-    });*/
+/**
+ * Find a device based on user
+ * @param {string} userId
+ * @returns {Promise<[*]>}
+ */
+devices.statics.findByUser = function(userId){
+	return this.find({linkedUsers: userId}).exec();
+	/*return new Promise(function (resolve, reject) {
+			_this.find({linkedUsers: user}, function (err, data) {
+					if (err) return reject(err);
+					return resolve(data);
+			})
+	});*/
 };
 
-devices.statics.addUser = function (device, user) {
-    const _this = this;
-    return new Promise(function (resolve, reject) {
-        _this.findById(device, function (err, data) {
-            if (err) return reject(err);
-            if (data.linkedUsers.indexOf(user) === -1) {
-                data.linkedUsers.push(user);
-                data.save(function (err, value) {
-                    if (err) return reject(err);
-                    return resolve(value);
-                });
-            }
-        });
-    });
+/**
+ * Link a user to given device
+ * @param {string} deviceId
+ * @param {string} userId
+ * @returns {Promise}
+ */
+devices.statics.addUser = async function(deviceId, userId){
+	const devices = this;
+
+	let device = await devices.findById(deviceId).exec();
+	if(device && device.linkedUsers.indexOf(userId) === -1){
+		device.linkedUsers.push(userId);
+	}
+
+	return device.save();
 };
 
-devices.statics.unlinkUser = function (user, callback) {
-    this.findByUser(user).then(function (data) {
-        if (!data) return;
-        let promises = [];
+/**
+ * Unlink user from its devices
+ * @param {string} userId
+ * @returns {Promise}
+ */
+devices.statics.unlinkUser = async function(userId){
+	let linkedUsers = await this.findByUser(userId);
+	if(!linkedUsers){
+		return;
+	}
 
-        data.forEach(function (device) {
-            device.linkedUsers.forEach(function (item, index) {
-                if (item.toString() === user.toString())
-                    device.linkedUsers.splice(index, 1);
-                promises.push(device.save());
-            });
-        });
+	if(!linkedUsers){
+		return;
+	}
 
-        Promise.all(promises).then(function () {
-            callback();
-        }, function (err) {
-            console.error(err);
-        });
-    });
+	let promises = [];
+
+	linkedUsers.forEach((device) =>{
+		device.linkedUsers.forEach((item, index) =>{
+			if(item.toString() === userId.toString())
+				device.linkedUsers.splice(index, 1);
+			promises.push(device.save());
+		});
+	});
+
+	return Promise.resolve(Promise.all(promises));
 };
 
 const Device = mongoose.model('Device', devices);
