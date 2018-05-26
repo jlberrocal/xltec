@@ -12,12 +12,24 @@ const router = require('express').Router({
 
 router.route('/')
 	.get(async (req, resp) =>{
-		let users = await Users.find().select('-_id name username roles allowedDevices').populate({
-			path: 'allowedDevices',
-			select: '-__v'
-		}).exec();
+		let {page, pageSize, filters, sort} = req.query;
+		try{
+			let query = Users.find()
+				.select('_id name username roles allowedDevices')
+				.populate('allowedDevices', '-__v');
 
-		resp.json(users);
+			let count = Users.find().select('_id').count().exec();
+			query = query.paginate(page, pageSize).sorter(sort);
+
+			let users = await query.exec();
+
+			resp.json({
+				results: users,
+				total: await count
+			});
+		} catch(e){
+			resp.end(e).status(500);
+		}
 	})
 	.post(function(req, resp){
 		if(req.body){

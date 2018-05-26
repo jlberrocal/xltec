@@ -8,8 +8,12 @@ let {Query} = require('mongoose');
 	 * @return {Query}
 	 */
 	Query.prototype.paginate = function(page, pageSize){
-		if(page && pageSize)
-			this.skip((page - 1) * pageSize).limit(+pageSize);
+		try{
+			if(page && pageSize)
+				this.skip((page - 1) * pageSize).limit(+pageSize);
+		} catch(e){
+			console.error(e);
+		}
 		return this;
 	}
 })();

@@ -24,11 +24,9 @@ router.route('/')
 	})
 	.post(async (req, resp) =>{
 		const device = new Devices(req.body);
-		device.save().then(function(){
-			return resp.json({message: "Device stored successfully"});
-		}, function(err){
-			return resp.status(500).json(err);
-		});
+		device.save()
+			.then(() => resp.json({message: "Device stored successfully"}))
+			.catch((err) => resp.status(500).json(err));
 	});
 
 router.route('/:id')
