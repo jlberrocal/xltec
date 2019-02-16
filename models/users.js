@@ -24,6 +24,8 @@ const user = new Schema({
  */
 function comparePassword(password) {
 	let _user = this;
+	console.log(_user);
+
 	return bcrypt.compare(password, _user.password)
 }
 

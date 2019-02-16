@@ -20,18 +20,20 @@ router.route('/')
 		const act = new Activity({
 			auditor: username,
 			date: new Date(),
-			device: mac
+			device: mac || req.connection.remoteAddress
 		});
 
 		const attempt = await act.save();
-
 		const user = await Users.findOne().where('username', username).populate('allowedDevices').populate('permissions').exec();
+
 		if(!user){
 			return resp.status(404).json(invalid);
 		}
 
 		let success = await user.comparePassword(password);
 		if(!success){
+			attempt.success = false;
+			await attempt.save();
 			return resp.send({message: 'invalid credentials'});
 		}
 
