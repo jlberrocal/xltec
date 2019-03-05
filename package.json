@@ -4,9 +4,8 @@
   "description": "backend for the xltec application",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js",
-    "production": "node server.js",
-    "build": "babel src -d lib"
+    "start": "node server.js",
+    "heroku-postbuild": "echo Skip build on Heroku"
   },
   "keywords": [
     "aeromedicion"
@@ -23,5 +22,6 @@
     "moment": "^2.22.1",
     "mongoose": "^5.1.2",
     "xlsx": "^0.12.13"
-  }
+  },
+  "heroku-run-build-script": false
 }
