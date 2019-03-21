@@ -27,8 +27,9 @@ router.post('/bundle', (req, resp) => {
 	Object.keys(req.body).forEach(key =>{
 		if(req.body[key] && req.body[key].length > 0){
 			req.body[key].forEach(item =>{
-				item._id = item.Id + item.auditor + "-" + item.dateISO;
+				item._id = (item.Id || item.id) + item.auditor + "-" + (item.dateISO || item.dateIso);
 				delete item.Id;
+				delete item.id;
 			});
 			body[key] = req.body[key];
 		}
