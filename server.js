@@ -20,12 +20,12 @@ app.use(cors());
 app.use(bodyParser.json({limit: 1024 * 1024 * 50}));
 app.use(bodyParser.urlencoded({extended: true}));
 
-/*app.use('/api/login', login);
+app.use('/api/login', login);
 app.use('/api/users', jwtMiddleware, users);
 app.use('/api/devices', jwtMiddleware, devices);
 app.use('/api/permissions', jwtMiddleware, permissions);
 app.use('/api/process', jwtMiddleware, processes);
-app.use('/api/codes', jwtMiddleware, codes);*/
+app.use('/api/codes', jwtMiddleware, codes);
 
 app.use('/api/login', login);
 app.use('/api/users', users);

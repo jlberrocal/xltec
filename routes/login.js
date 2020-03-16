@@ -24,7 +24,7 @@ router.route('/')
 		});
 
 		const attempt = await act.save();
-		const user = await Users.findOne().where('username', username).populate('allowedDevices').populate('permissions').exec();
+		const user = await Users.findOne().where('username', username)/*.populate('allowedDevices').populate('permissions')*/.exec();
 
 		if(!user){
 			return resp.status(404).json(invalid);
@@ -37,7 +37,7 @@ router.route('/')
 			return resp.send({message: 'invalid credentials'});
 		}
 
-		if(mac){
+		/*if(mac){
 			let allowedDevices = user.allowedDevices.map((device) => device.mac.toLowerCase());
 
 			let allowedByDate = user.permissions.some((permission) => moment().isBetween(permission.from, permission.until));
@@ -49,7 +49,7 @@ router.route('/')
 			}else if(!allowedByDate){
 				return resp.status(403).json({message: `Sorry ${user.name} but you are not allowed to use the application today`});
 			}
-		}
+		}*/
 
 		attempt.success = true;
 		await attempt.save();
