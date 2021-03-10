@@ -27,13 +27,13 @@ app.use('/api/permissions', jwtMiddleware, permissions);
 app.use('/api/process', jwtMiddleware, processes);
 app.use('/api/codes', jwtMiddleware, codes);
 
-app.use('/api/login', login);
+/*app.use('/api/login', login);
 app.use('/api/users', users);
 app.use('/api/devices', devices);
 app.use('/api/permissions', permissions);
 app.use('/api/process', processes);
 app.use('/api/codes', codes);
-
+*/
 app.get('/api', function (req, resp) {
     resp.json({message: "Entry point of the api"});
 });
