@@ -3,9 +3,9 @@
  */
 'use strict';
 
-const mongoose = require('mongoose'),
-	bcrypt = require('bcrypt'),
-	SALT_WORK_FACTOR = 10;
+const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
+const SALT_WORK_FACTOR = 10;
 const {Schema} = mongoose;
 
 const user = new Schema({
